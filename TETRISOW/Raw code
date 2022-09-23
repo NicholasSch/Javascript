@@ -1,0 +1,1242 @@
+<!doctype html>
+<head>
+<title>TETRISOW</title>
+<canvas id="painel1" width="125" height="400"></canvas>
+<canvas id="tela" width="201" height="400" ></canvas>
+<canvas id="painel2" width="125" height="400"></canvas>
+
+<audio id = "music1">
+<source src = "outer wilds.mp3" type = "audio/mp3">
+</audio>
+<audio id = "music2">
+<source src = "timber hearth.mp3" type = "audio/mp3">
+</audio>
+<audio id = "music3">
+<source src = "main title.mp3" type = "audio/mp3">
+</audio>
+<audio id = "music4">
+<source src = "travelers.mp3" type = "audio/mp3">
+</audio>
+<audio id = "music5">
+<source src = "outer wilds-reprise.mp3" type = "audio/mp3">
+</audio>
+<audio id = "music6">
+<source src = "14.3 billion years.mp3" type = "audio/mp3">
+</audio>
+<audio id = "pecamexeu">
+<source src = "pecamexeu.mp3" type = "audio/mp3">
+</audio>
+<audio id = "pecarodou">
+<source src = "pecamexeu.mp3" type = "audio/mp3">
+</audio>
+<audio id = "pecatravou">
+<source src = "peca travada.mp3" type = "audio/mp3">
+</audio>
+<audio id = "linha removida">
+<source src = "line clear.mp3" type = "audio/mp3">
+</audio>
+<audio id = "game over">
+<source src = "game over.mp3" type = "audio/mp3">
+</audio>
+
+</head>
+<style>
+body {
+    background-image: url('https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_OuterWilds_image1600w.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+
+    canvas {
+        height : 90vh;
+    }
+</style>
+    <script>
+	var soundeffects = true
+	var music1 = document.getElementById("music1")
+	var music2 = document.getElementById("music2")
+	var music3 = document.getElementById("music3")
+    var music4 = document.getElementById("music4")
+    var music5 = document.getElementById("music5")
+	var music6 = document.getElementById("music6")
+	var pecamexeu = document.getElementById("pecamexeu")
+	var pecarodou = document.getElementById("pecarodou")
+	var pecatravou = document.getElementById("pecatravou")
+	var linhasremovidas = document.getElementById("linha removida")
+	var gameover = document.getElementById("game over")
+	music1.volume = 0.3
+	music2.volume = 0.3
+	music3.volume = 0.3
+	music4.volume = 0.3
+	music5.volume = 0.3
+	music6.volume = 0.3
+	pecamexeu.volume = 0.8
+	pecarodou.volume = 0.8
+	pecatravou.volume = 0.4
+	linhasremovidas.volume = 0.5
+	gameover.volume = 0.3
+		function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+	var musics = [music1,music2,music3,music4,music5,music6]
+	var musicas = shuffle(musics)
+
+	function sounds(sound){
+	if (sound == "musica"){
+	if(musicoption==true){
+	var z = 0
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+
+musicas[z].addEventListener("ended",function() {
+
+            z++
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+		musicas[z].addEventListener("ended",function() {
+            z++
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+		musicas[z].addEventListener("ended",function() {
+            z++
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+		musicas[z].addEventListener("ended",function() {
+            z++
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+		musicas[z].addEventListener("ended",function() {
+            z++
+	    musicas[z].currentTime=0
+	    musicas[z].play()
+})
+})
+})
+})
+})
+}
+	else{
+	music1.pause()
+	music2.pause()
+	music3.pause()
+	music4.pause()
+	music5.pause()
+	music6.pause()
+	}}
+	if (soundeffects == true){
+	if (sound == "pecamexeu"){
+	pecamexeu.play()
+    }	
+	else if (sound == "pecarodou"){
+	pecarodou.play()
+	}
+		else if (sound == "pecatravou"){
+	pecatravou.play()
+	}
+		else if (sound == "linha removida"){
+	linhasremovidas.play()
+	}
+		else if (sound == "game over"){
+	gameover.play()
+	music1.pause()
+	music2.pause()
+	music3.pause()
+	music4.pause()
+	music5.pause()
+	music6.pause()
+	}
+	}
+	}
+	
+var	tela	= document.getElementById("tela");
+var c	= tela.getContext("2d");
+var painel = document.getElementById("painel1");
+var a = painel.getContext("2d");
+var painel2 = document.getElementById("painel2");
+var b = painel2.getContext("2d");
+var nextpieces = []
+var q0 =0
+var q1 = 0
+var q2 = 0
+var q3 = 0
+var q4 = 0
+var q5 = 0
+var q6 = 0
+    var TAMANHO = 20;
+    const I = [
+        [
+            [0, 0, 0, 0],
+            [1, 1, 1, 1],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ],
+        [
+            [0, 0, 1, 0],
+            [0, 0, 1, 0],
+            [0, 0, 1, 0],
+            [0, 0, 1, 0],
+        ],
+        [
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [1, 1, 1, 1],
+            [0, 0, 0, 0],
+        ],
+        [
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+            [0, 1, 0, 0],
+        ]
+    ];
+    
+    const J = [
+        [
+            [1, 0, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 1],
+            [0, 1, 0],
+            [0, 1, 0]
+        ],
+        [
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 0, 1]
+        ],
+        [
+            [0, 1, 0],
+            [0, 1, 0],
+            [1, 1, 0]
+        ]
+    ];
+    
+    const L = [
+        [
+            [0, 0, 1],
+            [1, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 0],
+            [0, 1, 0],
+            [0, 1, 1]
+        ],
+        [
+            [0, 0, 0],
+            [1, 1, 1],
+            [1, 0, 0]
+        ],
+        [
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 1, 0]
+        ]
+    ];
+    
+    const O = [
+        [
+            [0, 0, 0, 0],
+            [0, 1, 1, 0],
+            [0, 1, 1, 0],
+            [0, 0, 0, 0],
+        ]
+    ];
+    
+    const S = [
+        [
+            [0, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 0],
+            [0, 1, 1],
+            [0, 0, 1]
+        ],
+        [
+            [0, 0, 0],
+            [0, 1, 1],
+            [1, 1, 0]
+        ],
+        [
+            [1, 0, 0],
+            [1, 1, 0],
+            [0, 1, 0]
+        ]
+    ];
+    
+    const T = [
+        [
+            [0, 1, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 1, 0],
+            [0, 1, 1],
+            [0, 1, 0]
+        ],
+        [
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 1, 0]
+        ],
+        [
+            [0, 1, 0],
+            [1, 1, 0],
+            [0, 1, 0]
+        ]
+    ];
+    
+    const Z = [
+        [
+            [1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]
+        ],
+        [
+            [0, 0, 1],
+            [0, 1, 1],
+            [0, 1, 0]
+        ],
+        [
+            [0, 0, 0],
+            [1, 1, 0],
+            [0, 1, 1]
+        ],
+        [
+            [0, 1, 0],
+            [1, 1, 0],
+            [1, 0, 0]
+        ]
+    ];
+    
+    const PECAS = [
+        [Z, "red"],
+        [S, "green"],
+        [T, "blue"],
+        [O, "purple"],
+        [L, "pink"],
+        [I, "brown"],
+        [J, "orange"]
+    ];
+var rank = []
+var dp = 0
+    var pp = 1;
+	var pontos = 0;
+	var nivel = 0;
+	var db = 0;
+	var la = 0;
+	var v1 = 0;
+	var v2 = 100;
+	var v3 = 150;
+	var easy = true;
+	var medium = false;
+	var hard = false;
+	var inicial = true;
+	var telad = false;
+	var jogo = false;
+	var lb = false;
+	var op = false;
+	var musicoption = true;
+	var r = 0
+
+	
+	function displayerE() {
+	b.clearRect(0,0,180,400)
+    b.fillStyle="black";
+    b.fillRect(0,0,180,400);
+function preencherPeca2(d1,cor) {
+        for (var i = 0; i < d1.tetraminoAtivo.length; i++) {
+            for (var j = 0; j < d1.tetraminoAtivo.length; j++) {
+                if (d1.tetraminoAtivo[i][j]) {
+                    desenharQuadrado1(d1.x + j, d1.y + i, cor);
+                }
+            }
+        }
+    }
+	    function desenharQuadrado1(x, y, cor){
+        b.fillStyle = cor;
+        b.fillRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    
+        b.strokeStyle = "grey";
+        b.strokeRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    }
+if (jogo == true){
+while(nextpieces.length<6){
+	 var piece = Math.floor(Math.random() * PECAS.length);
+	 nextpieces.push(piece)}
+TAMANHO = 20
+    r1 = nextpieces[0]
+	r2 = nextpieces[1]
+	r3 = nextpieces [2]
+	r4 = nextpieces[3]
+	r5 = nextpieces[4]
+	        peca1 = {
+            tetramino : PECAS[r1][0],
+            cor : PECAS[r1][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 1.5,
+            y : 1.7
+        }
+			peca2 = {
+            tetramino : PECAS[r2][0],
+            cor : PECAS[r2][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 1.5,
+            y : 5
+        }
+			peca3 = {
+            tetramino : PECAS[r3][0],
+            cor : PECAS[r3][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 1.5,
+            y : 9
+        }
+			peca4 = {
+            tetramino : PECAS[r4][0],
+            cor : PECAS[r4][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 1.5,
+            y : 13
+        }
+			peca5 = {
+            tetramino : PECAS[r5][0],
+            cor : PECAS[r5][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 1.5,
+            y : 17
+        }
+         peca1.tetraminoAtivo = peca1.tetramino[peca1.tetraminoN];
+		 peca2.tetraminoAtivo = peca2.tetramino[peca2.tetraminoN];
+	     peca3.tetraminoAtivo = peca3.tetramino[peca3.tetraminoN];
+		 peca4.tetraminoAtivo = peca4.tetramino[peca4.tetraminoN];
+		 peca5.tetraminoAtivo = peca5.tetramino[peca5.tetraminoN];
+		    
+
+	  preencherPeca2(peca1,peca1.cor)	
+	  preencherPeca2(peca2,peca2.cor)	
+	  preencherPeca2(peca3,peca3.cor)
+	  preencherPeca2(peca4,peca4.cor)	
+	  preencherPeca2(peca5,peca5.cor)	
+  
+	} 
+else {
+	        peca1 = {
+            tetramino : PECAS[0][0],
+            cor : PECAS[0][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.4,
+            y : 3
+        }
+	        peca2 = {
+            tetramino : PECAS[1][0],
+            cor : PECAS[1][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.4,
+            y : 6
+        }
+	        peca3 = {
+            tetramino : PECAS[2][0],
+            cor : PECAS[2][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.4,
+            y : 9.65
+        }
+	        peca4 = {
+            tetramino : PECAS[3][0],
+            cor : PECAS[3][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.2,
+            y : 12.5
+        }
+	        peca5 = {
+            tetramino : PECAS[4][0],
+            cor : PECAS[4][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.4,
+            y : 17
+        }
+	        peca6 = {
+            tetramino : PECAS[6][0],
+            cor : PECAS[6][1],
+            tetraminoN : 0,
+            tetram2inoAtivo : [[]],
+            x : 0.4,
+            y : 21
+        }
+	        peca7 = {
+            tetramino : PECAS[5][0],
+            cor : PECAS[5][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 0.4,
+            y : 24
+        }
+       b.font = "22.7px Arial";
+       b.fillStyle="purple";
+       b.fillText ("Pieces used",0,20);
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q0,60,61)
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q1,60,112.8)
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q2,60,164)
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q3,60,222.5)
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q4,60,277)
+       b.font = "20px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q6,60,332)
+       b.font = "19px Arial";
+       b.fillStyle="blue";
+       b.fillText("x " + q5,67,388)
+
+
+
+
+         peca1.tetraminoAtivo = peca1.tetramino[peca1.tetraminoN];
+	 preencherPeca2(peca1,peca1.cor)
+         peca2.tetraminoAtivo = peca2.tetramino[peca2.tetraminoN];
+         preencherPeca2(peca2,peca2.cor)
+         peca3.tetraminoAtivo = peca3.tetramino[peca3.tetraminoN];
+         preencherPeca2(peca3,peca3.cor)
+         peca4.tetraminoAtivo = peca4.tetramino[peca4.tetraminoN];
+	 preencherPeca2(peca4,peca4.cor)         
+         peca5.tetraminoAtivo = peca5.tetramino[peca5.tetraminoN];
+	 preencherPeca2(peca5,peca5.cor)
+         peca6.tetraminoAtivo = peca6.tetramino[peca6.tetraminoN];
+	 preencherPeca2(peca6,peca6.cor)         
+         peca7.tetraminoAtivo = peca7.tetramino[peca7.tetraminoN];
+	 preencherPeca2(peca7,peca7.cor)
+}
+}   
+        function teladojogo() {
+painel.style = "border: 5px solid red"
+painel2.style = "border: 5px solid yellow"
+tela.style = "border: 5px solid white"
+
+ q0 = 0
+ q1 = 0
+ q2 = 0
+ q3 = 0
+ q4 = 0
+ q5 = 0
+ q6 = 0
+		pontos = 0;
+		jogo = true;
+		inicial = false;
+		lb = false;
+		op = false;
+		telad = false;
+		var leng = 4;
+c.clearRect(0,0,240,400)
+while(leng!=3){
+        var nome = prompt("Insira o nick(3 caracteres)");
+		leng = nome.length;}
+        var tag1 = alert("Bem vindo " + nome);
+	function displayerD(){
+a.clearRect(0,0,180,400)
+a.fillStyle="black";
+a.fillRect(0,0,180,400);
+a.fillStyle="purple";
+a.fillRect(8,5,114,40);
+a.font = "35px Arial";
+a.fillStyle="blue";
+a.fillText ("Player:",10,35);
+a.font = "28px Arial";
+a.fillText ("Name:",24,78);
+a.font = "24px Arial";
+a.fillText (nome.toUpperCase(),40,104);
+a.font = "28px Arial";
+a.fillText ("Points:",22,159);
+a.font = "24px Arial";
+a.fillText (Math.floor(pontos),57,186);
+a.font = "28px Arial";
+a.fillText ("Level:",30,240);
+a.font = "24px Arial";
+a.fillText (nivel,57,267);
+a.font = "25px Arial";
+a.fillText ("Lines ERS:",0,325);
+a.font = "24px Arial";
+a.fillText (la,62,352);
+	}
+
+    const LINHA = 20;
+    const COLUNA = 10;
+    var TAMANHO = 20;
+    const VAGO = "black";
+    
+    var peca;
+    var tabuleiro = [];
+    
+    var inicioDescida;
+    var fimDeJogo = false;
+    
+    onkeydown = controlarPeca;
+    
+    iniciarTabuleiro();
+    
+    desenharTabuleiro();
+    
+	displayerD()
+    
+	gerarPeca();
+    
+    inicioDescida = Date.now();
+    
+    descerPeca();
+
+    // Sub-rotinas (funções)
+
+    function iniciarTabuleiro() {
+        for (var i = 0; i < LINHA; i++) {
+            tabuleiro[i] = [];
+            
+			
+            for (var j = 0; j < COLUNA; j++) {
+                tabuleiro[i][j] = VAGO;
+            }
+        }
+    }
+    
+    function desenharTabuleiro(){
+        for (var i = 0; i < LINHA; i++) {
+            for (var j = 0; j < COLUNA; j++) {
+                desenharQuadrado(j, i, tabuleiro[i][j]);
+            }
+        }
+    }
+    
+    function desenharQuadrado(x, y, cor){
+        c.fillStyle = cor;
+        c.fillRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    
+        c.strokeStyle = "grey";
+        c.strokeRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    }
+    
+    function gerarPeca(){
+displayerE()
+        var r = nextpieces[0]
+if(r == 0){
+q0=q0+1
+}
+else if(r == 1){
+q1=q1+1
+}
+else if (r == 2){
+q2=q2+1
+}
+else if (r == 3){
+q3 = q3+1
+}
+else if(r == 4){
+q4=q4+1
+}
+else if(r == 5){
+q5=q5+1
+}
+else if (r == 6){
+q6=q6+1
+}
+		nextpieces.shift(0)
+		displayerE()
+        if(fimDeJogo==false){
+        peca = {
+            tetramino : PECAS[r][0],
+            cor : PECAS[r][1],
+            tetraminoN : 0,
+            tetraminoAtivo : [[]],
+            x : 3,
+            y : -2
+        }
+        peca.tetraminoAtivo = peca.tetramino[peca.tetraminoN];
+		}
+	else{
+		if(soundeffects == true && musicoption == true){
+		sounds("game over")
+		}
+		else if (soundeffects == true){
+		sounds("game over")
+		}
+				var ranked = {
+		name:nome,
+		points:Math.floor(pontos)
+		}
+		var rank = []
+		if(localStorage.getItem('ranking')){
+		var pr = localStorage.getItem('ranking')
+		var player = JSON.parse(pr)
+		rank.push(ranked)
+		for(var i = 0;i<player.length;i++){
+		rank.push(player[i])
+		}
+		var rankstring = JSON.stringify(rank)
+		localStorage.setItem('ranking',rankstring)
+		}
+		else {
+		rank.push(ranked)
+		var rankstring = JSON.stringify(rank)
+		localStorage.setItem('ranking',rankstring)
+         }
+		leaderboards()
+		}
+    }
+    
+    function descerPeca(){
+        var agora = Date.now();
+        var delta = agora - inicioDescida;
+        //velocidade dos blocos reduzida a 1s
+		if(easy = true){
+        if (delta > 1000-v1) {
+            moverAbaixo();
+            inicioDescida = Date.now();
+        }}
+		else if(medium=true){
+		        if (delta > 1000-v2) {
+            moverAbaixo();
+            inicioDescida = Date.now();
+        }
+		}
+		else if(hard = true){
+		        if (delta > 1000-v3) {
+            moverAbaixo();
+            inicioDescida = Date.now();
+        }
+		}
+        
+        if (!fimDeJogo) {
+            requestAnimationFrame(descerPeca);
+        }
+    }
+    
+    function moverAbaixo(){
+        if (!colisao(0, 1, peca.tetraminoAtivo)) {
+            apagarPeca();
+            peca.y++;
+            desenharPeca();
+        } else {
+            travarPeca();
+            gerarPeca();
+        }
+        
+    }
+    function moverDireita(){
+        if (!colisao(1, 0, peca.tetraminoAtivo)) {
+            apagarPeca();
+            peca.x++;
+            desenharPeca();
+        }
+    }
+    
+    function moverEsquerda(){
+        if (!colisao(-1, 0, peca.tetraminoAtivo)) {
+            apagarPeca();
+            peca.x--;
+            desenharPeca();
+        }
+    }
+    
+    function colisao(x, y, p){
+        for (var i = 0; i < p.length; i++) {
+            for (var j = 0; j < p.length; j++) {
+                if (!p[i][j]) {
+                    continue;
+                }
+                var novoX = peca.x + j + x;
+                var novoY = peca.y + i + y;
+                
+                if (novoX < 0 || novoX >= COLUNA || novoY >= LINHA) {
+					return true;
+                }
+                
+                if (novoY < 0) {
+                    continue;
+                }
+                
+                if (tabuleiro[novoY][novoX] != VAGO) {
+					return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    function apagarPeca(){
+        preencherPeca(VAGO);
+    }
+    
+    function desenharPeca(){
+	if (fimDeJogo==false){
+        preencherPeca(peca.cor);
+   } }
+    
+    function preencherPeca(cor) {
+        for (var i = 0; i < peca.tetraminoAtivo.length; i++) {
+            for (var j = 0; j < peca.tetraminoAtivo.length; j++) {
+                if (peca.tetraminoAtivo[i][j]) {
+                    desenharQuadrado(peca.x + j, peca.y + i, cor);
+                }
+            }
+        }
+    }
+    
+    function travarPeca(){
+	sounds("pecatravou")
+        for (var i = 0; i < peca.tetraminoAtivo.length; i++) {
+            for (var j = 0; j < peca.tetraminoAtivo.length; j++) {
+                if (!peca.tetraminoAtivo[i][j]) {
+                    continue;
+                }
+    
+                if (peca.y + i < 0) {
+                    fimDeJogo = true;
+                    break;
+                }
+        var pp = 1
+                tabuleiro[peca.y+i][peca.x+j] = peca.cor;
+            }
+        }
+        for (var i = 0; i < LINHA; i++) {
+            var linhaCheia = true;
+            
+            for (var j = 0; j < COLUNA; j++) {
+                linhaCheia = linhaCheia && (tabuleiro[i][j] != VAGO);
+            }
+            
+            if (linhaCheia) {
+			sounds("linha removida")
+                for (var y = i; y > 1; y--) {
+                    for (var j = 0; j < COLUNA; j++) {
+                        tabuleiro[y][j] = tabuleiro[y-1][j];
+                    }
+                }
+                
+                for (var j = 0; j < COLUNA; j++) {
+                    tabuleiro[0][j] = VAGO;
+					
+                }if(la<9){
+				la = la+1
+				}
+				else{
+				la = 0
+				nivel = nivel+1
+				v1 = v1 + 50
+				v2=v2+65
+				v3=v3+80
+				}
+				if(pp==1){
+				 pontos = pontos+(100*(1+(nivel/10)+db))
+				}
+				else if(pp==2){
+				 pontos = pontos+(200*(1+(nivel/10)+db))			  
+				  }
+				  else if (pp==3){
+				   pontos = pontos+(200*(1+(nivel/10)+db))
+				  }
+				  else if (pp==4){ 
+				  pontos = pontos+(300*(1+(nivel/10)+db))
+				  }
+				  displayerD()
+									 pp++
+			}
+        }
+        
+        desenharTabuleiro();
+    }
+    
+    function rodarPeca(){
+        var proximoPadrao = peca.tetramino[(peca.tetraminoN + 1) % peca.tetramino.length];
+        var recuo = 0;
+        
+        if (colisao(0, 0, proximoPadrao)) {
+            if (peca.x > COLUNA/2) {
+                recuo = -1;
+            } else {
+                recuo = 1;
+            }
+        }
+        
+        if (!colisao(recuo, 0, proximoPadrao)) {
+            apagarPeca();
+            peca.x += recuo;
+            peca.tetraminoN = (peca.tetraminoN + 1) % peca.tetramino.length;
+            peca.tetraminoAtivo = peca.tetramino[peca.tetraminoN];
+            desenharPeca();
+        }
+    }
+    
+    function controlarPeca(evento){
+		if (fimDeJogo==false){
+        var tecla = evento.keyCode;
+        
+          if (tecla == 37) {
+            moverEsquerda();
+			descerPeca();
+			sounds("pecamexeu")
+        } else if (tecla == 90||tecla == 38) {
+            rodarPeca();
+			descerPeca();
+			sounds("pecarodou")
+        } else if (tecla == 39) {
+            moverDireita();
+			descerPeca();
+		   sounds("pecamexeu")
+        } else if (tecla == 40) {
+            moverAbaixo();
+			sounds("pecamexeu")
+						pontos = pontos + 1
+						displayerD();
+        }
+		  else if(tecla==32){
+		  while(!colisao(0, 1, peca.tetraminoAtivo)){
+		  moverAbaixo()
+		  pontos=pontos+2
+		  displayerD()
+		  }
+		  moverAbaixo()
+		}
+    }
+	}
+   }
+function telainicial(){ 
+painel2.style = "border: 0px solid yellow"
+tela.style = "border: 0px solid white"
+    inicial = true
+	jogo = false
+	lb = false
+	op = false
+	telad = false
+	gameover.pause()
+   c.clearRect(0,0,240,400)
+a.clearRect(0,0,180,400)
+b.clearRect(0,0,180,400)
+c.fillStyle="black";
+c.fillRect(9,	100,	190,	50); 
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Start game",29,134);
+c.fillStyle="black";
+c.fillRect(9,	200,	190,	50); 
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Leaderboards",10,235);
+c.fillStyle="black";
+c.fillRect(9,	300,	190,	50);  
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Options",49,334);
+c.font = "38px Arial";
+c.fillStyle="purple";
+c.fillText ("TETRISOW",0,50);
+}
+function	click(evento)	{
+				var	x	=	evento.pageX	-	tela.offsetLeft;
+				var	y	=	evento.pageY	-	tela.offsetTop;
+				if(inicial == true){
+			if(x>=14&&x<278&&y>142&&y<209){
+					window.setTimeout(teladificuldade,80)
+					sounds("musica")
+					}
+			else if (x>=14&&x<278&&y>281&&y<348){
+					leaderboards()
+				}
+			else if (x>=14&&x<278&&y>423&&y<490){
+			 options()
+			}
+			}
+			if(telad == true){
+			if(x>=62&&x<215&&y>142&&y<210){
+					teladojogo()
+					db = 0
+					easy = true
+					medium = false
+					hard = false
+					}
+			else if (x>=60&&x<228&&y>281&&y<349){
+					teladojogo()
+					db = 0.6
+					easy = false
+					medium=true
+					hard = false
+				}
+			else if (x>=70&&x<222&&y>422&&y<490){
+			teladojogo()
+			 		db = 1
+					easy = false
+					medium=false
+					hard = true
+			}
+			else if (x>=70&&x<196&&y>520&&y<562){
+			telainicial()
+			}
+			}
+			else if(lb==true){
+			
+			if (x>=80&&x<207&&y>508&&y<548){
+			telainicial()
+			}
+			}
+				else if(op==true){
+				if (x>=18&&x<265&&y>28&&y<77){
+				if (musicoption==true){
+				musicoption=false
+				alert("music off")
+				sounds("musica")
+				}
+				else{
+				musicoption=true
+				alert("music on")
+				sounds("musica")
+				}
+				}
+				if (x>=18&&x<265&&y>115&&y<160){
+				if (soundeffects==true){
+				soundeffects=false
+				alert("sound effects off")
+				}
+				else{
+				soundeffects=true
+				alert("sound effects on")
+				}
+				}
+				if (x>=18&&x<265&&y>197&&y<245){
+                 var sureness = prompt("Are you sure?(type yes to confirm)")
+				 if (sureness == "yes"){
+				 localStorage.clear()
+				 }
+				}
+			else if (x>=80&&x<207&&y>508&&y<548){
+			telainicial()
+			}
+			}
+				
+}
+function teladificuldade(){
+    inicial = false
+	jogo = false
+	lb = false
+	op = false
+	telad = true
+   c.clearRect(0,0,240,400)
+c.fillStyle="black";
+c.fillRect(43,	100,112,50); 
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Easy",65,134);
+c.fillStyle="black";
+c.fillRect(43,	200,	120,	50); 
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Medium",49,235);
+c.fillStyle="black";
+c.fillRect(48,	300,	110,	50);  
+c.font = "30px Arial";
+c.fillStyle="blue";
+c.fillText ("Hard",69,334);
+c.font = "38px Arial";
+c.fillStyle="purple";
+c.fillText ("TETRISOW",0,50);
+c.fillStyle="red"
+c.fillRect(58,360,90,30)
+c.font = "26px Arial";
+c.fillStyle="black";
+c.fillText("Back",73,384)
+}
+function leaderboards(){
+painel.style = "border: 0px solid red"
+tela.style = "border: 5px solid white"
+painel2.style = "border: 5px solid yellow"
+TAMANHO = 15;
+var rank = []
+var pr = localStorage.getItem('ranking')
+		var player = JSON.parse(pr)
+                var actual = player[0]
+var actualn = 11
+		for(var i = 0;i<player.length;i++){
+		rank.push(player[i])
+		}
+inicial = false
+jogo = false
+lb = true
+op = false
+c.clearRect(0,0,201,400)
+a.clearRect(0,0,180,400)
+b.clearRect(0,0,180,400)
+displayerE()
+var q = 62
+function showleaderboards(){
+if(rank.length>10){
+rank.length = 10;}
+c.fillStyle="black";
+c.fillRect(0, 0, 240, 400); 
+c.font = "26px Arial";
+c.fillStyle="red";
+c.fillText("You lost",54,30)
+c.font = "26px Arial";
+c.fillStyle="blue";
+for (var i = 0;i<rank.length;i++){
+c.fillText (i+1 + ". " + rank[i].name.toUpperCase() + ":" + rank[i].points,36,q); 
+if(actual==rank[i]){
+actualn = i
+}
+q = q + 32;
+}
+function redy (){
+if(lb==true){
+   c.clearRect(0,0,240,400)
+c.fillStyle="black";
+c.fillRect(0, 0, 240, 400); 
+c.fillStyle="red"
+c.fillRect(58,360,90,30)
+c.font = "26px Arial";
+c.fillStyle="black";
+c.fillText("Back",73,384)
+c.font = "26px Arial";
+c.fillStyle="blue";
+c.fillText("You lost",54,30)
+q = 62
+for (var i = 0;i<rank.length;i++){
+if(i!=actualn){
+c.font = "26px Arial";
+c.fillStyle="red";
+c.fillText (i+1 + ". " + rank[i].name.toUpperCase() + ":" + rank[i].points,36,q);}
+else{
+c.font = "26px Arial";
+c.fillStyle="yellow";
+c.fillText (i+1 + ". " + rank[i].name.toUpperCase() + ":" + rank[i].points,36,q);
+}
+q = q + 32;}
+}}
+function bluel (){
+if(lb == true){
+   c.clearRect(0,0,240,400)
+c.fillStyle="black";
+c.fillRect(0, 0, 240, 400); 
+c.fillStyle="red"
+c.fillRect(58,360,90,30)
+c.font = "26px Arial";
+c.fillStyle="black";
+c.fillText("Back",73,384)
+c.font = "26px Arial";
+c.fillStyle="red";
+c.fillText("You lost",54,30)
+q = 62
+c.font = "26px Arial";
+c.fillStyle="blue";
+for (var i = 0;i<rank.length;i++){
+c.fillText (i+1 + ". " + rank[i].name.toUpperCase() + ":" + rank[i].points,36,q);
+q = q + 32;}
+}}
+var redyy = setTimeout(redy,1000)
+var bluell = setTimeout(bluel,2000)
+var redyy = setTimeout(redy,3000)
+var bluell = setTimeout(bluel,4000)
+var redyy = setTimeout(redy,5000)
+var bluell = setTimeout(bluel,6000)
+var redyy = setTimeout(redy,7000)
+var bluell = setTimeout(bluel,8000)
+var redyy = setTimeout(redy,9000)
+var bluell = setTimeout(bluel,10000)
+var redyy = setTimeout(redy,11000)
+var bluell = setTimeout(bluel,12000)
+var redyy = setTimeout(redy,13000)
+var bluell = setTimeout(bluel,14000)
+var redyy = setTimeout(redy,15000)
+var bluell = setTimeout(bluel,16000)
+var redyy = setTimeout(redy,17000)
+var bluell = setTimeout(bluel,18000)
+var redyy = setTimeout(redy,19000)
+var bluell = setTimeout(bluel,20000)
+c.fillStyle="red"
+c.fillRect(58,360,90,30)
+c.font = "26px Arial";
+c.fillStyle="black";
+c.fillText("Back",73,384)
+}
+function organizeleaderboards(){
+var aux = {}
+for(var o = 0;o<rank.length-1;o++){
+for(var p = 0;p<rank.length-1;p++){
+if(rank[p].points<rank[p+1].points){
+aux = rank[p]
+rank[p] = rank[p+1]
+rank[p+1] = aux
+}
+}
+}
+}
+organizeleaderboards()
+showleaderboards()
+}
+function options(){
+ op=true
+ inicial = false
+jogo = false
+lb = false
+ c.clearRect(0,0,240,400)
+ c.fillStyle="black";
+c.fillRect(0, 0, 240, 400); 
+c.fillStyle="red"
+c.fillRect(58,360,90,30)
+c.font = "26px Arial";
+c.fillStyle="black";
+c.fillText("Back",73,384)
+
+c.fillStyle="red";
+c.fillRect(12,	20,	178,35); 
+c.font = "24px Arial";
+c.fillStyle="blue";
+c.fillText ("Stop/play music",15,45);
+
+c.fillStyle="red";
+c.fillRect(12,	80,	178,35); 
+c.font = "23px Arial";
+c.fillStyle="blue";
+c.fillText ("No sound effects",14,106);
+
+c.fillStyle="red";
+c.fillRect(12,	140,	178,35); 
+c.font = "20.2px Arial";
+c.fillStyle="blue";
+c.fillText ("Reset leaderboards",13.5,164);
+ }
+ telainicial()
+  tela.onclick = click
+  </script>
