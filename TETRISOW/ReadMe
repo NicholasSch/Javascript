@@ -1,3 +1,5 @@
 This is a tetris game made usign outer wilds as the main theme
 
 The game currently has a click mismatch between where the person clicked and recognized click based on the screen size so you may need to click higher or lower than the button appears on the screen
+
+It also breaks if you try to open the leaderboard withou having played it before, i could easilly fix that today but im leaving it as is to show how i developed through the years
